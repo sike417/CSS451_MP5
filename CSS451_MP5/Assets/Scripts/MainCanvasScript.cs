@@ -15,7 +15,8 @@ public class MainCanvasScript : MonoBehaviour
 	public GameObject MeshResolutionSlider;
     public GameObject XFormControl;
 	public Dropdown ModeDropdown;
-	private List<string> _dropdownOptionList;
+    public MainWorldController MainWorld;
+    private List<string> _dropdownOptionList;
 	
 	// Use this for initialization
 	void Start ()
@@ -24,6 +25,8 @@ public class MainCanvasScript : MonoBehaviour
         var CylinderResolutionControl = CylinderResolutionSlider.GetComponent<ControlScript>();
         var CylinderRotationControl = CylinderRotationSlider.GetComponent<ControlScript>();
 
+        //MeshControl.AddValueChanged()
+        MeshControl.AddValueChanged(MainWorld.UpdateMeshVertices);
         MeshControl.InitSliderControl(2, 20, 5);
         CylinderResolutionControl.InitSliderControl(4, 20, 10);
         CylinderRotationControl.InitSliderControl(10, 360, 275);
