@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TextureVertexCalculator : MonoBehaviour {
+public partial class TextureVertexCalculator : MonoBehaviour {
 
     List<GameObject> mControllers = new List<GameObject>();
     public int m_desiredVertexCount;
-    const float startingPoint = -2;
-    const float endingPoint = 2;
+    const float startingPoint = -1;
+    const float endingPoint = 1;
+
     Vector3[] vertices;
-    int[] triangles;
+    TriangleCollection triangles = new TriangleCollection();
     Vector3[] normalVectors;
+    List<LineSegment> mNormals = new List<LineSegment>();
+
 
     // Use this for initialization
     void Start () {
@@ -27,9 +30,9 @@ public class TextureVertexCalculator : MonoBehaviour {
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh;
         theMesh.Clear();
+        triangles.Clear();
 
         vertices = new Vector3[(int)Mathf.Pow(m_desiredVertexCount, 2)];
-        triangles = new int[(int)Mathf.Pow(m_desiredVertexCount - 1, 2) * 2 * 3];
         normalVectors = new Vector3[vertices.Length];
 
         CalculateVertices();
@@ -40,7 +43,8 @@ public class TextureVertexCalculator : MonoBehaviour {
         theMesh.triangles = triangles;
         theMesh.normals = normalVectors;
 
-        InitControllers(vertices);
+        InitControllers();
+        InitNormalSegment();
     }
 
     void CalculateVertices()
@@ -62,8 +66,6 @@ public class TextureVertexCalculator : MonoBehaviour {
 
     void CalculateTriangles()
     {
-        int triangleIndex = 0;
-
         for (int verticesIndex = 0; verticesIndex < Mathf.Pow(m_desiredVertexCount, 2) - m_desiredVertexCount; verticesIndex++)
         {
             var adjustedIndexValue = (verticesIndex - (m_desiredVertexCount - 1));
@@ -71,30 +73,151 @@ public class TextureVertexCalculator : MonoBehaviour {
             {
                 continue;
             }
-
-            triangles[triangleIndex] = verticesIndex; triangles[triangleIndex + 1] = verticesIndex + m_desiredVertexCount; triangles[triangleIndex + 2] = verticesIndex + m_desiredVertexCount + 1;
-            triangles[triangleIndex + 3] = verticesIndex; triangles[triangleIndex + 4] = triangles[triangleIndex + 2]; triangles[triangleIndex + 5] = verticesIndex + 1;
-            triangleIndex += 6;
+            triangles.Add(new IndividualTriangle
+            {
+                pointA = verticesIndex,
+                pointB = verticesIndex + m_desiredVertexCount,
+                pointC = verticesIndex + m_desiredVertexCount + 1
+            });
+            triangles.Add(new IndividualTriangle
+            {
+                pointA = verticesIndex,
+                pointB = verticesIndex + m_desiredVertexCount + 1,
+                pointC = verticesIndex + 1
+            });
         }
+    }
+
+    Vector3 CalculateFaceNormals(int point1,int point2, int point3)
+    {
+        var a = vertices[point2] - vertices[point1];
+        var b = vertices[point3] - vertices[point1];
+        return Vector3.Cross(a, b).normalized;
     }
 
     void CalculateNormalVectors()
     {
-        for (int index = 0; index < normalVectors.Length; index++)
+        var triNormalVectors = new Vector3[(int)(triangles.Count)];
+
+        for (int index = 0; index < triNormalVectors.Length; index++)
         {
-            normalVectors[index] = new Vector3(0, 1, 0);
+            if(index % 2 == 0)
+            {
+                triNormalVectors[index] = CalculateFaceNormals(triangles[index].pointB, triangles[index].pointC, triangles[index].pointA);
+            }
+            else
+            {
+                triNormalVectors[index] = CalculateFaceNormals(triangles[index].pointA, triangles[index].pointB, triangles[index].pointC);
+            }
+        }
+
+        var trianglesPerRow = (m_desiredVertexCount - 1) * 2;
+
+        for (int verticesIndex = 0; verticesIndex < normalVectors.Length; verticesIndex++)
+        {
+            var adjustedIndexValue = (verticesIndex - (m_desiredVertexCount - 1));
+            var layer = verticesIndex / m_desiredVertexCount;
+
+            //first column
+            if (verticesIndex % m_desiredVertexCount == 0)
+            {
+                if(verticesIndex < m_desiredVertexCount)
+                {
+                    //first row
+                    normalVectors[verticesIndex] = (triNormalVectors[verticesIndex] + triNormalVectors[verticesIndex + 1]).normalized; 
+                }
+                else if(verticesIndex >= (m_desiredVertexCount * (m_desiredVertexCount - 1)))
+                {
+                    normalVectors[verticesIndex] = (triNormalVectors[trianglesPerRow * (m_desiredVertexCount - 2)]).normalized;
+                    //last row
+                }
+                else
+                {
+                    var sectionOne = trianglesPerRow * (layer - 1);
+                    var sectionTwo = trianglesPerRow * (layer);
+
+                    normalVectors[verticesIndex] = (triNormalVectors[sectionOne] + triNormalVectors[sectionTwo] + triNormalVectors[sectionTwo + 1]).normalized;
+                    
+                }
+            }
+            else if(verticesIndex == m_desiredVertexCount - 1 || (adjustedIndexValue >= 0 && (adjustedIndexValue % m_desiredVertexCount) == 0))
+            {
+                //last column
+                if (verticesIndex < m_desiredVertexCount)
+                {
+                    //first row
+                    normalVectors[verticesIndex] = (triNormalVectors[trianglesPerRow - 1]).normalized;
+                }
+                else if (verticesIndex == (Mathf.Pow(m_desiredVertexCount, 2) - 1))
+                {
+                    var finalPosition = trianglesPerRow * (m_desiredVertexCount - 1);
+                    normalVectors[verticesIndex] = (triNormalVectors[finalPosition - 1] + triNormalVectors[finalPosition - 2]).normalized;
+                    //last row
+                }
+                else
+                {
+                    var sectionOne = trianglesPerRow * (layer);
+                    var sectionTwo = trianglesPerRow * (layer + 1);
+
+                    normalVectors[verticesIndex] = (triNormalVectors[sectionOne - 1] + triNormalVectors[sectionOne - 2] + triNormalVectors[sectionTwo - 1]).normalized;
+                }
+            }
+            else
+            {
+                if(layer == 0)
+                {
+                    var startingIndex = (verticesIndex - 1) * 2 + 1;
+                    normalVectors[verticesIndex] = (triNormalVectors[startingIndex] + triNormalVectors[startingIndex + 1] + triNormalVectors[startingIndex + 2]).normalized;
+                }
+                else if(layer == (m_desiredVertexCount - 1))
+                {
+                    var startingIndex = ((verticesIndex % m_desiredVertexCount) - 1) + (layer - 1) * trianglesPerRow;
+                    normalVectors[verticesIndex] = (triNormalVectors[startingIndex] + triNormalVectors[startingIndex + 1] + triNormalVectors[startingIndex + 2]).normalized; 
+                }
+                else
+                {
+                    var sectionOne = (layer - 1) * trianglesPerRow + ((verticesIndex % m_desiredVertexCount) - 1) * 2;
+                    var sectionTwo = (layer) * trianglesPerRow + ((verticesIndex % m_desiredVertexCount) - 1) * 2;
+
+                    normalVectors[verticesIndex] = (triNormalVectors[sectionOne] + triNormalVectors[sectionOne + 1] + triNormalVectors[sectionTwo] + triNormalVectors[sectionTwo + 1] + triNormalVectors[sectionTwo + 2]).normalized;
+                }
+            }
+            //normalVectors[verticesIndex] = new Vector3(0, 1, 0);
         }
     }
 
-    void InitControllers(Vector3[] v)
+    void InitControllers()
     {
-        for (int i = 0; i < v.Length; i++)
+        for (int i = 0; i < vertices.Length; i++)
         {
             mControllers.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
             mControllers[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-            mControllers[i].transform.localPosition = v[i];
+            mControllers[i].transform.localPosition = vertices[i];
             mControllers[i].transform.parent = this.transform;
+            mControllers[i].layer = 8;
+        }
+    }
+
+    void InitNormalSegment()
+    {
+        ClearNormalSegments();
+        for(int index = 0; index < vertices.Length; index++)
+        {
+            GameObject o = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            mNormals.Add(o.AddComponent<LineSegment>());
+            mNormals[index].SetWidth(0.05f);
+            mNormals[index].transform.SetParent(this.transform);
+            mNormals[index].gameObject.layer = 8;
+        }
+
+    }
+
+    void UpdateNormals()
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            mNormals[i].SetEndPoints(vertices[i], vertices[i] + 1.0f * normalVectors[i]);
         }
     }
 
@@ -107,8 +230,33 @@ public class TextureVertexCalculator : MonoBehaviour {
         mControllers.Clear();
     }
 
+    void ClearNormalSegments()
+    {
+        foreach(var lineSegment in mNormals)
+        {
+            Destroy(lineSegment.gameObject);
+        }
+
+        mNormals.Clear();
+    }
+
+    void UpdateVerticesFromControlPoints()
+    {        
+        for(int verticeIndex = 0; verticeIndex < mControllers.Count; verticeIndex++)
+        {
+            vertices[verticeIndex] = mControllers[verticeIndex].transform.localPosition;
+        }
+    }
+
     // Update is called once per frame
     void Update () {
-		
-	}
+        Mesh theMesh = GetComponent<MeshFilter>().mesh;
+        UpdateVerticesFromControlPoints();
+        theMesh.vertices = vertices;
+
+        CalculateNormalVectors();
+        theMesh.normals = normalVectors;
+
+        UpdateNormals();
+    }
 }

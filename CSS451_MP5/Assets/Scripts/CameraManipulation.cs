@@ -5,6 +5,9 @@ using UnityEngine;
 public class CameraManipulation : MonoBehaviour {
 
 	public Transform LookAt;
+    public LayerMask DefaultMask;
+    public LayerMask ControlMask;
+    private Camera MainCamera;
 
 
     private float mMouseX = 0f;
@@ -14,47 +17,45 @@ public class CameraManipulation : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
+        MainCamera = this.GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		 transform.LookAt(LookAt.transform);
 
-        if (Input.GetKey(KeyCode.LeftAlt) &&
-            (Input.GetMouseButtonDown(0) || (Input.GetMouseButtonDown(1))))
+        if (Input.GetKey(KeyCode.LeftAlt))
         {
-            mMouseX = Input.mousePosition.x;
-            mMouseY = Input.mousePosition.y;
-            // Debug.Log("MouseButtonDown 0: (" + mMouseX + " " + mMouseY);
-        }
-        else if (Input.GetKey(KeyCode.LeftAlt) && 
-                (Input.GetMouseButton(0) || (Input.GetMouseButton(1))))
-        {
-            float dx = mMouseX - Input.mousePosition.x;
-            float dy = mMouseY - Input.mousePosition.y;
-
-            // annoying bug: 
-            //     If MouseClick move AND THEN ALT-key
-            //     Encounter jump because mMouseX and mMouseY not initialized
-
-            mMouseX = Input.mousePosition.x;
-            mMouseY = Input.mousePosition.y;
-
-            if (Input.GetMouseButton(0)) // Camera Rotation
-            { 
-                RotateCameraAboutUp(-dx * kPixelToDegree);
-                RotateCameraAboutSide(dy * kPixelToDegree);
-            } else if (Input.GetMouseButton(1)) // Camera tracking
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
             {
-                Vector3 delta = dx * kPixelToDistant * transform.right + dy * kPixelToDistant * transform.up;
-                transform.localPosition += delta;
-                LookAt.localPosition += delta;
-            } 
-        }
+                mMouseX = Input.mousePosition.x;
+                mMouseY = Input.mousePosition.y;
+                // Debug.Log("MouseButtonDown 0: (" + mMouseX + " " + mMouseY);
+            }
+            else if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                float dx = mMouseX - Input.mousePosition.x;
+                float dy = mMouseY - Input.mousePosition.y;
 
-        if (Input.GetKey(KeyCode.LeftAlt))  // dolly or zooming
-        {
+                // annoying bug: 
+                //     If MouseClick move AND THEN ALT-key
+                //     Encounter jump because mMouseX and mMouseY not initialized
+
+                mMouseX = Input.mousePosition.x;
+                mMouseY = Input.mousePosition.y;
+
+                if (Input.GetMouseButton(0)) // Camera Rotation
+                {
+                    RotateCameraAboutUp(-dx * kPixelToDegree);
+                    RotateCameraAboutSide(dy * kPixelToDegree);
+                } else if (Input.GetMouseButton(1)) // Camera tracking
+                {
+                    Vector3 delta = dx * kPixelToDistant * transform.right + dy * kPixelToDistant * transform.up;
+                    transform.localPosition += delta;
+                    LookAt.localPosition += delta;
+                }
+            }
+
             Vector2 d = Input.mouseScrollDelta;
             // move camera position towards LookAt
             Vector3 v = transform.localPosition - LookAt.localPosition;
@@ -62,6 +63,18 @@ public class CameraManipulation : MonoBehaviour {
             v /= dist;
             float m = dist - d.y;
             transform.localPosition = LookAt.localPosition + m * v;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            MainCamera.cullingMask = ControlMask;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            MainCamera.cullingMask = DefaultMask;
+        }
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
+
         }
     }
 
