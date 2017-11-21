@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainWorldController : MonoBehaviour {
 
-    public TextureVertexCalculator mesh;
+    public BaseMesh SquareMesh;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +18,6 @@ public class MainWorldController : MonoBehaviour {
 
     public void UpdateMeshVertices(float desiredVertexCount)
     {
-        mesh.UpdateVertexCount((int)desiredVertexCount);
+        SquareMesh.UpdateVertexCount((int)desiredVertexCount);
     }
 }

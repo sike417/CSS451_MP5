@@ -2,31 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class TextureVertexCalculator : MonoBehaviour {
+public partial class SquareMesh : BaseMesh {
 
-    List<GameObject> mControllers = new List<GameObject>();
-    public int m_desiredVertexCount;
-    const float startingPoint = -1;
-    const float endingPoint = 1;
+    const float startingPoint = -2;
+    const float endingPoint = 2;
 
-    Vector3[] vertices;
-    TriangleCollection triangles = new TriangleCollection();
-    Vector3[] normalVectors;
-    List<LineSegment> mNormals = new List<LineSegment>();
-
-
-    // Use this for initialization
-    void Start () {
-    }
-
-    public void UpdateVertexCount(int vertexCount)
-    {
-        m_desiredVertexCount = vertexCount;
-        ClearControllers();
-        InitializeMesh();
-    }
-
-    void InitializeMesh()
+    protected override void InitializeMesh()
     {
         Mesh theMesh = GetComponent<MeshFilter>().mesh;
         theMesh.Clear();
@@ -44,7 +25,7 @@ public partial class TextureVertexCalculator : MonoBehaviour {
         theMesh.normals = normalVectors;
 
         InitControllers();
-        InitNormalSegment();
+        InitNormalSegments();
     }
 
     void CalculateVertices()
@@ -88,14 +69,14 @@ public partial class TextureVertexCalculator : MonoBehaviour {
         }
     }
 
-    Vector3 CalculateFaceNormals(int point1,int point2, int point3)
+    protected override Vector3 CalculateFaceNormals(int point1,int point2, int point3)
     {
         var a = vertices[point2] - vertices[point1];
         var b = vertices[point3] - vertices[point1];
         return Vector3.Cross(a, b).normalized;
     }
 
-    void CalculateNormalVectors()
+    protected override void CalculateNormalVectors()
     {
         var triNormalVectors = new Vector3[(int)(triangles.Count)];
 
@@ -186,34 +167,7 @@ public partial class TextureVertexCalculator : MonoBehaviour {
         }
     }
 
-    void InitControllers()
-    {
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            mControllers.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
-            mControllers[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-
-            mControllers[i].transform.localPosition = vertices[i];
-            mControllers[i].transform.parent = this.transform;
-            mControllers[i].layer = 8;
-        }
-    }
-
-    void InitNormalSegment()
-    {
-        ClearNormalSegments();
-        for(int index = 0; index < vertices.Length; index++)
-        {
-            GameObject o = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            mNormals.Add(o.AddComponent<LineSegment>());
-            mNormals[index].SetWidth(0.05f);
-            mNormals[index].transform.SetParent(this.transform);
-            mNormals[index].gameObject.layer = 8;
-        }
-
-    }
-
-    void UpdateNormals()
+    protected override void UpdateNormals()
     {
         for (int i = 0; i < vertices.Length; i++)
         {
@@ -221,42 +175,11 @@ public partial class TextureVertexCalculator : MonoBehaviour {
         }
     }
 
-    void ClearControllers()
-    {
-        foreach(var gameObject in mControllers)
-        {
-            Destroy(gameObject);
-        }
-        mControllers.Clear();
-    }
-
-    void ClearNormalSegments()
-    {
-        foreach(var lineSegment in mNormals)
-        {
-            Destroy(lineSegment.gameObject);
-        }
-
-        mNormals.Clear();
-    }
-
-    void UpdateVerticesFromControlPoints()
+    protected override void UpdateVerticesFromControlPoints()
     {        
         for(int verticeIndex = 0; verticeIndex < mControllers.Count; verticeIndex++)
         {
             vertices[verticeIndex] = mControllers[verticeIndex].transform.localPosition;
         }
-    }
-
-    // Update is called once per frame
-    void Update () {
-        Mesh theMesh = GetComponent<MeshFilter>().mesh;
-        UpdateVerticesFromControlPoints();
-        theMesh.vertices = vertices;
-
-        CalculateNormalVectors();
-        theMesh.normals = normalVectors;
-
-        UpdateNormals();
     }
 }

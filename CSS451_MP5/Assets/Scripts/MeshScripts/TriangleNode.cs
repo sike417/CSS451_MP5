@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 
-public partial class TextureVertexCalculator : MonoBehaviour
+public partial class BaseMesh : MonoBehaviour
 {
     public struct IndividualTriangle
     {
