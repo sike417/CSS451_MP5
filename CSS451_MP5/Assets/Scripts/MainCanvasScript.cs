@@ -27,6 +27,7 @@ public class MainCanvasScript : MonoBehaviour
 
         //MeshControl.AddValueChanged()
         MeshControl.AddValueChanged(MainWorld.UpdateMeshVertices);
+        CylinderResolutionControl.AddValueChanged(MainWorld.UpdateCylinderResolution);
         MeshControl.InitSliderControl(2, 20, 3);
         CylinderResolutionControl.InitSliderControl(4, 20, 10);
         CylinderRotationControl.InitSliderControl(10, 360, 275);
@@ -39,11 +40,6 @@ public class MainCanvasScript : MonoBehaviour
             SetMode((Mode)value);
         });
         SetMode((Mode)ModeDropdown.value);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public void SetMode(Mode nextMode)
@@ -65,5 +61,6 @@ public class MainCanvasScript : MonoBehaviour
 			default:
 				break;
 		}
+        MainWorld.SetActiveMode(nextMode);
 	}
 }

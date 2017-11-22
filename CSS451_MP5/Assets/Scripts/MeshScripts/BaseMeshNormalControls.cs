@@ -13,7 +13,10 @@ public partial class BaseMesh : MonoBehaviour
 
     protected virtual void UpdateNormals()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            mNormals[i].SetEndPoints(vertices[i], vertices[i] + 1.0f * normalVectors[i]);
+        }
     }
 
     protected virtual Vector3 CalculateFaceNormals(int point1, int point2, int point3)

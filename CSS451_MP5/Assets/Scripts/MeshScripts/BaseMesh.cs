@@ -79,12 +79,12 @@ public partial class BaseMesh : MonoBehaviour
 
     private void Update()
     {
-        Mesh theMesh = GetComponent<MeshFilter>().mesh;
-        UpdateVerticesFromControlPoints();
-        theMesh.vertices = vertices;
-        CalculateNormalVectors();
-        theMesh.normals = normalVectors;
+        //Mesh theMesh = GetComponent<MeshFilter>().mesh;
+        //UpdateVerticesFromControlPoints();
+        //theMesh.vertices = vertices;
+        //CalculateNormalVectors();
+        //theMesh.normals = normalVectors;
 
-        UpdateNormals();
+        //UpdateNormals();
     }
 }

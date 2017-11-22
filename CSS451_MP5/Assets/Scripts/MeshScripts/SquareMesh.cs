@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class SquareMesh : BaseMesh {
+public class SquareMesh : BaseMesh {
 
     const float startingPoint = -2;
     const float endingPoint = 2;
@@ -164,14 +164,6 @@ public partial class SquareMesh : BaseMesh {
                 }
             }
             //normalVectors[verticesIndex] = new Vector3(0, 1, 0);
-        }
-    }
-
-    protected override void UpdateNormals()
-    {
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            mNormals[i].SetEndPoints(vertices[i], vertices[i] + 1.0f * normalVectors[i]);
         }
     }
 
