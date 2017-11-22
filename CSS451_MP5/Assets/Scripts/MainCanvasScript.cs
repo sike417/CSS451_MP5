@@ -28,6 +28,7 @@ public class MainCanvasScript : MonoBehaviour
         //MeshControl.AddValueChanged()
         meshControl.AddValueChanged(MainWorld.UpdateMeshVertices);
         cylinderResolutionControl.AddValueChanged(MainWorld.UpdateCylinderResolution);
+		cylinderRotationControl.AddValueChanged(MainWorld.UpdateCylinderRotation);
         meshControl.InitSliderControl(2, 20, 3);
         cylinderResolutionControl.InitSliderControl(4, 20, 10);
         cylinderRotationControl.InitSliderControl(10, 360, 275);

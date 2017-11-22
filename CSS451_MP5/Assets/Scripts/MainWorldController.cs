@@ -6,7 +6,7 @@ using UnityEngine;
 public class MainWorldController : MonoBehaviour {
 
     public BaseMesh SquareMesh;
-    public BaseMesh CylinderMesh;
+    public CylinderMeshScript CylinderMesh;
 
     private void Start()
     {
@@ -22,6 +22,11 @@ public class MainWorldController : MonoBehaviour {
     public void UpdateCylinderResolution(float desiredVertexCount)
     {
         CylinderMesh.UpdateVertexCount((int)desiredVertexCount);
+    }
+
+    public void UpdateCylinderRotation(float desiredRotation)
+    {
+        CylinderMesh.SetCylinderRotation(desiredRotation);
     }
 
     public void SetActiveMode(Mode activeMode)

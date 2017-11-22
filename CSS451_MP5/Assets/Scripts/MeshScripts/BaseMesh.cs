@@ -6,18 +6,18 @@ using UnityEngine;
 
 public partial class BaseMesh : MonoBehaviour
 {
-    protected List<GameObject> mControllers = new List<GameObject>();
-    protected int m_desiredVertexCount;
+    protected List<GameObject> MControllers = new List<GameObject>();
+    protected int MDesiredVertexCount;
 
-    protected TriangleCollection triangles = new TriangleCollection();
+    protected TriangleCollection Triangles = new TriangleCollection();
 
-    protected Vector3[] vertices;
-    protected Vector3[] normalVectors;
-    protected List<LineSegment> mNormals = new List<LineSegment>();
+    protected Vector3[] Vertices;
+    protected Vector3[] NormalVectors;
+    protected List<LineSegment> MNormals = new List<LineSegment>();
 
     public virtual void UpdateVertexCount(int vertexCount)
     {
-        m_desiredVertexCount = vertexCount;
+        MDesiredVertexCount = vertexCount;
         ClearControllers();
         InitializeMesh();
     }
@@ -29,46 +29,46 @@ public partial class BaseMesh : MonoBehaviour
 
     protected virtual void ClearControllers()
     {
-        foreach (var gameObject in mControllers)
+        foreach (var currentController in MControllers)
         {
-            Destroy(gameObject);
+            Destroy(currentController);
         }
-        mControllers.Clear();
+        MControllers.Clear();
     }
 
     protected virtual void ClearNormalSegments()
     {
-        foreach (var lineSegment in mNormals)
+        foreach (var lineSegment in MNormals)
         {
             Destroy(lineSegment.gameObject);
         }
 
-        mNormals.Clear();
+        MNormals.Clear();
     }
 
     protected virtual void InitNormalSegments()
     {
         ClearNormalSegments();
-        for (int index = 0; index < vertices.Length; index++)
+        for (var index = 0; index < Vertices.Length; index++)
         {
-            GameObject o = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            mNormals.Add(o.AddComponent<LineSegment>());
-            mNormals[index].SetWidth(0.05f);
-            mNormals[index].transform.SetParent(this.transform);
-            mNormals[index].gameObject.layer = 8;
+            var o = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            MNormals.Add(o.AddComponent<LineSegment>());
+            MNormals[index].SetWidth(0.05f);
+            MNormals[index].transform.SetParent(this.transform);
+            MNormals[index].gameObject.layer = 8;
         }
     }
 
     protected virtual void InitControllers()
     {
-        for (int i = 0; i < vertices.Length; i++)
+        for (var i = 0; i < Vertices.Length; i++)
         {
-            mControllers.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
-            mControllers[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            MControllers.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
+            MControllers[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
-            mControllers[i].transform.localPosition = vertices[i];
-            mControllers[i].transform.parent = this.transform;
-            mControllers[i].layer = 8;
+            MControllers[i].transform.localPosition = Vertices[i];
+            MControllers[i].transform.parent = this.transform;
+            MControllers[i].layer = 8;
         }
     }
 

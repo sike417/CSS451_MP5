@@ -13,9 +13,9 @@ public partial class BaseMesh : MonoBehaviour
 
     protected virtual void UpdateNormals()
     {
-        for (int i = 0; i < vertices.Length; i++)
+        for (int i = 0; i < Vertices.Length; i++)
         {
-            mNormals[i].SetEndPoints(vertices[i], vertices[i] + 1.0f * normalVectors[i]);
+            MNormals[i].SetEndPoints(Vertices[i], Vertices[i] + 1.0f * NormalVectors[i]);
         }
     }
 
