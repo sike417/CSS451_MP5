@@ -21,16 +21,16 @@ public class MainCanvasScript : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        var MeshControl = MeshResolutionSlider.GetComponent<ControlScript>();
-        var CylinderResolutionControl = CylinderResolutionSlider.GetComponent<ControlScript>();
-        var CylinderRotationControl = CylinderRotationSlider.GetComponent<ControlScript>();
+        var meshControl = MeshResolutionSlider.GetComponent<ControlScript>();
+        var cylinderResolutionControl = CylinderResolutionSlider.GetComponent<ControlScript>();
+        var cylinderRotationControl = CylinderRotationSlider.GetComponent<ControlScript>();
 
         //MeshControl.AddValueChanged()
-        MeshControl.AddValueChanged(MainWorld.UpdateMeshVertices);
-        CylinderResolutionControl.AddValueChanged(MainWorld.UpdateCylinderResolution);
-        MeshControl.InitSliderControl(2, 20, 3);
-        CylinderResolutionControl.InitSliderControl(4, 20, 10);
-        CylinderRotationControl.InitSliderControl(10, 360, 275);
+        meshControl.AddValueChanged(MainWorld.UpdateMeshVertices);
+        cylinderResolutionControl.AddValueChanged(MainWorld.UpdateCylinderResolution);
+        meshControl.InitSliderControl(2, 20, 3);
+        cylinderResolutionControl.InitSliderControl(4, 20, 10);
+        cylinderRotationControl.InitSliderControl(10, 360, 275);
 
 
         _dropdownOptionList = Enum.GetNames(typeof(Mode)).ToList();
@@ -39,6 +39,7 @@ public class MainCanvasScript : MonoBehaviour
         {
             SetMode((Mode)value);
         });
+		
         SetMode((Mode)ModeDropdown.value);
 	}
 

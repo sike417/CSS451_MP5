@@ -21,6 +21,9 @@ public class CylinderMeshScript : BaseMesh {
         CalculateVertices();
         CalculateTriangles();
         CalculateNormalVectors();
+        
+        theMesh.vertices = vertices;
+        theMesh.triangles = triangles;
 
         InitControllers();
     }
@@ -44,6 +47,60 @@ public class CylinderMeshScript : BaseMesh {
 
     void CalculateTriangles()
     {
+        for (var verticalVertices = 0; verticalVertices < m_desiredVertexCount - 1; verticalVertices++)
+        {
+
+            for (var horizontalVertices = 0; horizontalVertices < m_desiredVertexCount - 1; horizontalVertices++)
+            {
+                triangles.Add(new IndividualTriangle
+                {
+                    pointA = verticalVertices + (m_desiredVertexCount * horizontalVertices),
+                    pointB = verticalVertices + (m_desiredVertexCount * horizontalVertices) + 1,
+                    pointC = verticalVertices + (m_desiredVertexCount * horizontalVertices) + m_desiredVertexCount + 1
+                });
+                
+                triangles.Add(new IndividualTriangle
+                {
+                    pointA = verticalVertices + (m_desiredVertexCount * horizontalVertices),
+                    pointB = verticalVertices + (m_desiredVertexCount * horizontalVertices) + m_desiredVertexCount,
+                    pointC = verticalVertices + (m_desiredVertexCount * horizontalVertices) + m_desiredVertexCount + 1
+                });
+            }
+            
+//            triangles.Add(new IndividualTriangle
+//            {
+//                pointA = verticalVertices,
+//                pointB = verticalVertices + 1,
+//                pointC = verticalVertices + m_desiredVertexCount + 1
+//            });
+//            
+//            triangles.Add(new IndividualTriangle
+//            {
+//                pointA = verticalVertices,
+//                pointB = verticalVertices + m_desiredVertexCount,
+//                pointC = verticalVertices + m_desiredVertexCount + 1
+//            });
+        }
+//        for (int verticesIndex = 0; verticesIndex < Mathf.Pow(m_desiredVertexCount, 2) - m_desiredVertexCount; verticesIndex++)
+//        {
+//            var adjustedIndexValue = (verticesIndex - (m_desiredVertexCount - 1));
+//            if (verticesIndex == m_desiredVertexCount - 1 || (adjustedIndexValue >= 0 && (adjustedIndexValue % m_desiredVertexCount) == 0))
+//            {
+//                continue;
+//            }
+//            triangles.Add(new IndividualTriangle
+//            {
+//                pointA = verticesIndex,
+//                pointB = verticesIndex + m_desiredVertexCount,
+//                pointC = verticesIndex + m_desiredVertexCount + 1
+//            });
+//            triangles.Add(new IndividualTriangle
+//            {
+//                pointA = verticesIndex,
+//                pointB = verticesIndex + m_desiredVertexCount + 1,
+//                pointC = verticesIndex + 1
+//            });
+//        }
     }
 
     protected override Vector3 CalculateFaceNormals(int point1, int point2, int point3)
@@ -55,6 +112,10 @@ public class CylinderMeshScript : BaseMesh {
 
     protected override void CalculateNormalVectors()
     {
+        for (int i = 0; i < mNormals.Count; i++)
+        {
+            
+        }
     }
 
     protected override void UpdateVerticesFromControlPoints()
