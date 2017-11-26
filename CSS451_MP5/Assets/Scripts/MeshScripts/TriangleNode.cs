@@ -12,6 +12,11 @@ public partial class BaseMesh : MonoBehaviour
         public int pointA;
         public int pointB;
         public int pointC;
+
+        public List<int> ReturnPoints()
+        {
+            return new List<int> { pointA, pointB, pointC };
+        }
     }
 
     public class TriangleCollection : List<IndividualTriangle>

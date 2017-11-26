@@ -10,38 +10,38 @@ using UnityEngine.UI;
 
 public class MainCanvasScript : MonoBehaviour
 {
-	public GameObject CylinderResolutionSlider;
-	public GameObject CylinderRotationSlider;
-	public GameObject MeshResolutionSlider;
-    public GameObject XFormControl;
-	public Dropdown ModeDropdown;
-    public MainWorldController MainWorld;
-    private List<string> _dropdownOptionList;
+	public GameObject M_CylinderResolutionSlider;
+	public GameObject M_CylinderRotationSlider;
+	public GameObject M_MeshResolutionSlider;
+    public GameObject M_XFormControl;
+	public Dropdown M_ModeDropdown;
+    public MainWorldController M_MainWorld;
+    private List<string> m_dropdownOptionList;
 	
 	// Use this for initialization
 	void Start ()
 	{
-        var meshControl = MeshResolutionSlider.GetComponent<ControlScript>();
-        var cylinderResolutionControl = CylinderResolutionSlider.GetComponent<ControlScript>();
-        var cylinderRotationControl = CylinderRotationSlider.GetComponent<ControlScript>();
+        var meshControl = M_MeshResolutionSlider.GetComponent<ControlScript>();
+        var cylinderResolutionControl = M_CylinderResolutionSlider.GetComponent<ControlScript>();
+        var cylinderRotationControl = M_CylinderRotationSlider.GetComponent<ControlScript>();
 
         //MeshControl.AddValueChanged()
-        meshControl.AddValueChanged(MainWorld.UpdateMeshVertices);
-        cylinderResolutionControl.AddValueChanged(MainWorld.UpdateCylinderResolution);
-		cylinderRotationControl.AddValueChanged(MainWorld.UpdateCylinderRotation);
+        meshControl.AddValueChanged(M_MainWorld.UpdateMeshVertices);
+        cylinderResolutionControl.AddValueChanged(M_MainWorld.UpdateCylinderResolution);
+		cylinderRotationControl.AddValueChanged(M_MainWorld.UpdateCylinderRotation);
         meshControl.InitSliderControl(2, 20, 3);
-        cylinderResolutionControl.InitSliderControl(4, 20, 10);
-        cylinderRotationControl.InitSliderControl(10, 360, 275);
+        cylinderResolutionControl.InitSliderControl(4, 20, 4);
+        cylinderRotationControl.InitSliderControl(10, 360, 310);
 
 
-        _dropdownOptionList = Enum.GetNames(typeof(Mode)).ToList();
-        ModeDropdown.AddOptions(_dropdownOptionList);
-        ModeDropdown.onValueChanged.AddListener((int value) =>
+        m_dropdownOptionList = Enum.GetNames(typeof(Mode)).ToList();
+        M_ModeDropdown.AddOptions(m_dropdownOptionList);
+        M_ModeDropdown.onValueChanged.AddListener((int value) =>
         {
             SetMode((Mode)value);
         });
 		
-        SetMode((Mode)ModeDropdown.value);
+        SetMode((Mode)M_ModeDropdown.value);
 	}
 
 	public void SetMode(Mode nextMode)
@@ -49,20 +49,20 @@ public class MainCanvasScript : MonoBehaviour
 		switch (nextMode)
 		{
 			case Mode.Mesh:
-				MeshResolutionSlider.SetActive(true);
-                XFormControl.SetActive(true);
-				CylinderResolutionSlider.SetActive(false);
-				CylinderRotationSlider.SetActive(false);
+				M_MeshResolutionSlider.SetActive(true);
+                M_XFormControl.SetActive(true);
+				M_CylinderResolutionSlider.SetActive(false);
+				M_CylinderRotationSlider.SetActive(false);
 				break;
 			case Mode.Cylinder:
-				MeshResolutionSlider.SetActive(false);
-                XFormControl.SetActive(false);
-				CylinderResolutionSlider.SetActive(true);
-				CylinderRotationSlider.SetActive(true);
+				M_MeshResolutionSlider.SetActive(false);
+                M_XFormControl.SetActive(false);
+				M_CylinderResolutionSlider.SetActive(true);
+				M_CylinderRotationSlider.SetActive(true);
 				break;
 			default:
 				break;
 		}
-        MainWorld.SetActiveMode(nextMode);
+        M_MainWorld.SetActiveMode(nextMode);
 	}
 }

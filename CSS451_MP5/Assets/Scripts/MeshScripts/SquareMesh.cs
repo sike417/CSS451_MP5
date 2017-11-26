@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class SquareMesh : BaseMesh {
 
-    const float startingPoint = -2;
-    const float endingPoint = 2;
+    const float StartingPoint = -2;
+    const float EndingPoint = 2;
 
     protected override void InitializeMesh()
     {
-        Mesh theMesh = GetComponent<MeshFilter>().mesh;
+        var theMesh = GetComponent<MeshFilter>().mesh;
         theMesh.Clear();
-        Triangles.Clear();
+        M_Triangles.Clear();
 
-        Vertices = new Vector3[(int)Mathf.Pow(MDesiredVertexCount, 2)];
-        NormalVectors = new Vector3[Vertices.Length];
+        M_Vertices = new Vector3[(int)Mathf.Pow(M_DesiredVertexCount, 2)];
+        M_NormalVectors = new Vector3[M_Vertices.Length];
 
         CalculateVertices();
         CalculateTriangles();
         CalculateNormalVectors();
 
-        theMesh.vertices = Vertices;
-        theMesh.triangles = Triangles;
-        theMesh.normals = NormalVectors;
+        theMesh.vertices = M_Vertices;
+        theMesh.triangles = M_Triangles;
+        theMesh.normals = M_NormalVectors;
 
         InitControllers();
         InitNormalSegments();
@@ -30,40 +30,40 @@ public class SquareMesh : BaseMesh {
 
     void CalculateVertices()
     {
-        var delta = (Mathf.Abs(endingPoint) + Mathf.Abs(startingPoint)) / (MDesiredVertexCount - 1);
-        int vertexIndex = 0;
-        for (int zIndex = 0; zIndex < MDesiredVertexCount; zIndex++)
+        var delta = (Mathf.Abs(EndingPoint) + Mathf.Abs(StartingPoint)) / (M_DesiredVertexCount - 1);
+        var vertexIndex = 0;
+        for (var zIndex = 0; zIndex < M_DesiredVertexCount; zIndex++)
         {
             //calculate z position
-            var zPosition = startingPoint + zIndex * delta;
-            for (int xIndex = 0; xIndex < MDesiredVertexCount; xIndex++, vertexIndex++)
+            var zPosition = StartingPoint + zIndex * delta;
+            for (var xIndex = 0; xIndex < M_DesiredVertexCount; xIndex++, vertexIndex++)
             {
                 //calculates x position
-                var xPosition = startingPoint + xIndex * delta;
-                Vertices[vertexIndex] = new Vector3(xPosition, 0, zPosition);
+                var xPosition = StartingPoint + xIndex * delta;
+                M_Vertices[vertexIndex] = new Vector3(xPosition, 0, zPosition);
             }
         }
     }
 
     void CalculateTriangles()
     {
-        for (int verticesIndex = 0; verticesIndex < Mathf.Pow(MDesiredVertexCount, 2) - MDesiredVertexCount; verticesIndex++)
+        for (var verticesIndex = 0; verticesIndex < Mathf.Pow(M_DesiredVertexCount, 2) - M_DesiredVertexCount; verticesIndex++)
         {
-            var adjustedIndexValue = (verticesIndex - (MDesiredVertexCount - 1));
-            if (verticesIndex == MDesiredVertexCount - 1 || (adjustedIndexValue >= 0 && (adjustedIndexValue % MDesiredVertexCount) == 0))
+            var adjustedIndexValue = (verticesIndex - (M_DesiredVertexCount - 1));
+            if (verticesIndex == M_DesiredVertexCount - 1 || (adjustedIndexValue >= 0 && (adjustedIndexValue % M_DesiredVertexCount) == 0))
             {
                 continue;
             }
-            Triangles.Add(new IndividualTriangle
+            M_Triangles.Add(new IndividualTriangle
             {
                 pointA = verticesIndex,
-                pointB = verticesIndex + MDesiredVertexCount,
-                pointC = verticesIndex + MDesiredVertexCount + 1
+                pointB = verticesIndex + M_DesiredVertexCount,
+                pointC = verticesIndex + M_DesiredVertexCount + 1
             });
-            Triangles.Add(new IndividualTriangle
+            M_Triangles.Add(new IndividualTriangle
             {
                 pointA = verticesIndex,
-                pointB = verticesIndex + MDesiredVertexCount + 1,
+                pointB = verticesIndex + M_DesiredVertexCount + 1,
                 pointC = verticesIndex + 1
             });
         }
@@ -71,45 +71,45 @@ public class SquareMesh : BaseMesh {
 
     protected override Vector3 CalculateFaceNormals(int point1,int point2, int point3)
     {
-        var a = Vertices[point2] - Vertices[point1];
-        var b = Vertices[point3] - Vertices[point1];
+        var a = M_Vertices[point2] - M_Vertices[point1];
+        var b = M_Vertices[point3] - M_Vertices[point1];
         return Vector3.Cross(a, b).normalized;
     }
 
     protected override void CalculateNormalVectors()
     {
-        var triNormalVectors = new Vector3[(int)(Triangles.Count)];
+        var triNormalVectors = new Vector3[(int)(M_Triangles.Count)];
 
-        for (int index = 0; index < triNormalVectors.Length; index++)
+        for (var index = 0; index < triNormalVectors.Length; index++)
         {
             if(index % 2 == 0)
             {
-                triNormalVectors[index] = CalculateFaceNormals(Triangles[index].pointB, Triangles[index].pointC, Triangles[index].pointA);
+                triNormalVectors[index] = CalculateFaceNormals(M_Triangles[index].pointB, M_Triangles[index].pointC, M_Triangles[index].pointA);
             }
             else
             {
-                triNormalVectors[index] = CalculateFaceNormals(Triangles[index].pointA, Triangles[index].pointB, Triangles[index].pointC);
+                triNormalVectors[index] = CalculateFaceNormals(M_Triangles[index].pointA, M_Triangles[index].pointB, M_Triangles[index].pointC);
             }
         }
 
-        var trianglesPerRow = (MDesiredVertexCount - 1) * 2;
+        var trianglesPerRow = (M_DesiredVertexCount - 1) * 2;
 
-        for (int verticesIndex = 0; verticesIndex < NormalVectors.Length; verticesIndex++)
+        for (var verticesIndex = 0; verticesIndex < M_NormalVectors.Length; verticesIndex++)
         {
-            var adjustedIndexValue = (verticesIndex - (MDesiredVertexCount - 1));
-            var layer = verticesIndex / MDesiredVertexCount;
+            var adjustedIndexValue = (verticesIndex - (M_DesiredVertexCount - 1));
+            var layer = verticesIndex / M_DesiredVertexCount;
 
             //first column
-            if (verticesIndex % MDesiredVertexCount == 0)
+            if (verticesIndex % M_DesiredVertexCount == 0)
             {
-                if(verticesIndex < MDesiredVertexCount)
+                if(verticesIndex < M_DesiredVertexCount)
                 {
                     //first row
-                    NormalVectors[verticesIndex] = (triNormalVectors[verticesIndex] + triNormalVectors[verticesIndex + 1]).normalized; 
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[verticesIndex] + triNormalVectors[verticesIndex + 1]).normalized; 
                 }
-                else if(verticesIndex >= (MDesiredVertexCount * (MDesiredVertexCount - 1)))
+                else if(verticesIndex >= (M_DesiredVertexCount * (M_DesiredVertexCount - 1)))
                 {
-                    NormalVectors[verticesIndex] = (triNormalVectors[trianglesPerRow * (MDesiredVertexCount - 2)]).normalized;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[trianglesPerRow * (M_DesiredVertexCount - 2)]).normalized;
                     //last row
                 }
                 else
@@ -117,22 +117,22 @@ public class SquareMesh : BaseMesh {
                     var sectionOne = trianglesPerRow * (layer - 1);
                     var sectionTwo = trianglesPerRow * (layer);
 
-                    NormalVectors[verticesIndex] = (triNormalVectors[sectionOne] + triNormalVectors[sectionTwo] + triNormalVectors[sectionTwo + 1]).normalized;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[sectionOne] + triNormalVectors[sectionTwo] + triNormalVectors[sectionTwo + 1]).normalized;
                     
                 }
             }
-            else if(verticesIndex == MDesiredVertexCount - 1 || (adjustedIndexValue >= 0 && (adjustedIndexValue % MDesiredVertexCount) == 0))
+            else if(verticesIndex == M_DesiredVertexCount - 1 || (adjustedIndexValue >= 0 && (adjustedIndexValue % M_DesiredVertexCount) == 0))
             {
                 //last column
-                if (verticesIndex < MDesiredVertexCount)
+                if (verticesIndex < M_DesiredVertexCount)
                 {
                     //first row
-                    NormalVectors[verticesIndex] = (triNormalVectors[trianglesPerRow - 1]).normalized;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[trianglesPerRow - 1]).normalized;
                 }
-                else if (verticesIndex == (Mathf.Pow(MDesiredVertexCount, 2) - 1))
+                else if (verticesIndex == (Mathf.Pow(M_DesiredVertexCount, 2) - 1))
                 {
-                    var finalPosition = trianglesPerRow * (MDesiredVertexCount - 1);
-                    NormalVectors[verticesIndex] = (triNormalVectors[finalPosition - 1] + triNormalVectors[finalPosition - 2]).normalized;
+                    var finalPosition = trianglesPerRow * (M_DesiredVertexCount - 1);
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[finalPosition - 1] + triNormalVectors[finalPosition - 2]).normalized;
                     //last row
                 }
                 else
@@ -140,7 +140,7 @@ public class SquareMesh : BaseMesh {
                     var sectionOne = trianglesPerRow * (layer);
                     var sectionTwo = trianglesPerRow * (layer + 1);
 
-                    NormalVectors[verticesIndex] = (triNormalVectors[sectionOne - 1] + triNormalVectors[sectionOne - 2] + triNormalVectors[sectionTwo - 1]).normalized;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[sectionOne - 1] + triNormalVectors[sectionOne - 2] + triNormalVectors[sectionTwo - 1]).normalized;
                 }
             }
             else
@@ -148,30 +148,29 @@ public class SquareMesh : BaseMesh {
                 if(layer == 0)
                 {
                     var startingIndex = (verticesIndex - 1) * 2 + 1;
-                    NormalVectors[verticesIndex] = (triNormalVectors[startingIndex] + triNormalVectors[startingIndex + 1] + triNormalVectors[startingIndex + 2]).normalized;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[startingIndex] + triNormalVectors[startingIndex + 1] + triNormalVectors[startingIndex + 2]).normalized;
                 }
-                else if(layer == (MDesiredVertexCount - 1))
+                else if(layer == (M_DesiredVertexCount - 1))
                 {
-                    var startingIndex = ((verticesIndex % MDesiredVertexCount) - 1) + (layer - 1) * trianglesPerRow;
-                    NormalVectors[verticesIndex] = (triNormalVectors[startingIndex] + triNormalVectors[startingIndex + 1] + triNormalVectors[startingIndex + 2]).normalized; 
+                    var startingIndex = ((verticesIndex % M_DesiredVertexCount) - 1) + (layer - 1) * trianglesPerRow;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[startingIndex] + triNormalVectors[startingIndex + 1] + triNormalVectors[startingIndex + 2]).normalized; 
                 }
                 else
                 {
-                    var sectionOne = (layer - 1) * trianglesPerRow + ((verticesIndex % MDesiredVertexCount) - 1) * 2;
-                    var sectionTwo = (layer) * trianglesPerRow + ((verticesIndex % MDesiredVertexCount) - 1) * 2;
+                    var sectionOne = (layer - 1) * trianglesPerRow + ((verticesIndex % M_DesiredVertexCount) - 1) * 2;
+                    var sectionTwo = (layer) * trianglesPerRow + ((verticesIndex % M_DesiredVertexCount) - 1) * 2;
 
-                    NormalVectors[verticesIndex] = (triNormalVectors[sectionOne] + triNormalVectors[sectionOne + 1] + triNormalVectors[sectionTwo] + triNormalVectors[sectionTwo + 1] + triNormalVectors[sectionTwo + 2]).normalized;
+                    M_NormalVectors[verticesIndex] = (triNormalVectors[sectionOne] + triNormalVectors[sectionOne + 1] + triNormalVectors[sectionTwo] + triNormalVectors[sectionTwo + 1] + triNormalVectors[sectionTwo + 2]).normalized;
                 }
             }
-            //normalVectors[verticesIndex] = new Vector3(0, 1, 0);
         }
     }
 
     protected override void UpdateVerticesFromControlPoints()
     {        
-        for(int verticeIndex = 0; verticeIndex < MControllers.Count; verticeIndex++)
+        for(var verticeIndex = 0; verticeIndex < M_Controllers.Count; verticeIndex++)
         {
-            Vertices[verticeIndex] = MControllers[verticeIndex].transform.localPosition;
+            M_Vertices[verticeIndex] = M_Controllers[verticeIndex].transform.localPosition;
         }
     }
 }
