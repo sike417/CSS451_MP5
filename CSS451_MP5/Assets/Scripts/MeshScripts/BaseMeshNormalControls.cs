@@ -21,6 +21,8 @@ public partial class BaseMesh : MonoBehaviour
 
     protected virtual Vector3 CalculateFaceNormals(int point1, int point2, int point3)
     {
-        throw new NotImplementedException();
+        var sideA = M_Vertices[point2] - M_Vertices[point1];
+        var sideB = M_Vertices[point3] - M_Vertices[point1];
+        return Vector3.Cross(sideA, sideB).normalized;
     }
 }

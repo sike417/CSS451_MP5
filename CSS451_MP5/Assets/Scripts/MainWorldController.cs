@@ -40,6 +40,7 @@ public class MainWorldController : MonoBehaviour {
             case Mode.Cylinder:
                 SquareMesh.gameObject.SetActive(false);
                 CylinderMesh.gameObject.SetActive(true);
+                CylinderMesh.ClearHasChangedFlag();
                 break;
         }
     }

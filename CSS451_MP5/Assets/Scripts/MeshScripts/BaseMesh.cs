@@ -64,6 +64,7 @@ public partial class BaseMesh : MonoBehaviour
         for (var i = 0; i < M_Vertices.Length; i++)
         {
             M_Controllers.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
+            M_Controllers[i].AddComponent(typeof(ControlNodeScripts));
             M_Controllers[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
             M_Controllers[i].transform.localPosition = M_Vertices[i];
@@ -73,6 +74,16 @@ public partial class BaseMesh : MonoBehaviour
     }
 
     protected virtual void UpdateVerticesFromControlPoints()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected virtual void CalculateTriangles()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected virtual void CalculateVertices()
     {
         throw new NotImplementedException();
     }

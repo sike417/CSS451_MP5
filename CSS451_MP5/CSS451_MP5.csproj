@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\MainWorldController.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\BaseMesh.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\BaseMeshNormalControls.cs" />
+    <Compile Include="Assets\Scripts\MeshScripts\ControlNodeScripts.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\CylinderMeshScript.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\SquareMesh.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\TriangleNode.cs" />

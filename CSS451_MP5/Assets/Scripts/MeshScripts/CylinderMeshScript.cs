@@ -17,6 +17,14 @@ public class CylinderMeshScript : BaseMesh {
         InitializeMesh();
     }
 
+    public void ClearHasChangedFlag()
+    {
+        foreach(var controller in M_Controllers)
+        {
+            controller.transform.hasChanged = false;
+        }
+    }
+
     protected override void InitializeMesh()
     {
         var theMesh = GetComponent<MeshFilter>().mesh;
@@ -37,7 +45,7 @@ public class CylinderMeshScript : BaseMesh {
         InitNormalSegments();
     }
 
-    void CalculateVertices()
+    protected override void CalculateVertices()
     {
         var rotationPerVertex = m_cylinderRotation / (M_DesiredVertexCount - 1);
         var offsetPerIndex = Height / M_DesiredVertexCount;
@@ -54,7 +62,7 @@ public class CylinderMeshScript : BaseMesh {
         }
     }
 
-    void CalculateTriangles()
+    protected override void CalculateTriangles()
     {
         for (var horizontalVertices = 0; horizontalVertices < M_DesiredVertexCount - 1; horizontalVertices++)
         {
@@ -76,13 +84,6 @@ public class CylinderMeshScript : BaseMesh {
                 });
             }
         }
-    }
-
-    protected override Vector3 CalculateFaceNormals(int point1, int point2, int point3)
-    {
-        var sideA = M_Vertices[point2] - M_Vertices[point1];
-        var sideB = M_Vertices[point3] - M_Vertices[point1];
-        return Vector3.Cross(sideA, sideB).normalized;
     }
 
     protected override void CalculateNormalVectors()
@@ -166,5 +167,13 @@ public class CylinderMeshScript : BaseMesh {
 
     protected override void UpdateVerticesFromControlPoints()
     {
+        var changeList = Enumerable.Range(0, M_Controllers.Count).Where(index => M_Controllers[index].GetComponent<ControlNodeScripts>().isTransformDirty == true).ToList();
+        if(changeList.Count > 0)
+        {
+            foreach(var index in changeList)
+            {
+                M_Controllers[index].transform.hasChanged = false;
+            }
+        }
     }
 }

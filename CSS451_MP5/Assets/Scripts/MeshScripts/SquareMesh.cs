@@ -28,7 +28,7 @@ public class SquareMesh : BaseMesh {
         InitNormalSegments();
     }
 
-    void CalculateVertices()
+    protected override void CalculateVertices()
     {
         var delta = (Mathf.Abs(EndingPoint) + Mathf.Abs(StartingPoint)) / (M_DesiredVertexCount - 1);
         var vertexIndex = 0;
@@ -45,7 +45,7 @@ public class SquareMesh : BaseMesh {
         }
     }
 
-    void CalculateTriangles()
+    protected override void CalculateTriangles()
     {
         for (var verticesIndex = 0; verticesIndex < Mathf.Pow(M_DesiredVertexCount, 2) - M_DesiredVertexCount; verticesIndex++)
         {
@@ -67,13 +67,6 @@ public class SquareMesh : BaseMesh {
                 pointC = verticesIndex + 1
             });
         }
-    }
-
-    protected override Vector3 CalculateFaceNormals(int point1,int point2, int point3)
-    {
-        var a = M_Vertices[point2] - M_Vertices[point1];
-        var b = M_Vertices[point3] - M_Vertices[point1];
-        return Vector3.Cross(a, b).normalized;
     }
 
     protected override void CalculateNormalVectors()
@@ -170,7 +163,6 @@ public class SquareMesh : BaseMesh {
     {        
         for(var verticeIndex = 0; verticeIndex < M_Controllers.Count; verticeIndex++)
         {
-            M_Vertices[verticeIndex] = M_Controllers[verticeIndex].transform.localPosition;
         }
     }
 }
