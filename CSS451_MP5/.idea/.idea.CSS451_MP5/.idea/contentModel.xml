@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="RiderRiderContentModelStore">
-    <excludedPaths>
-      <Path>Temp</Path>
-      <Path>Library</Path>
-    </excludedPaths>
+  <component name="ContentModelStore">
+    <e p="C:\Users\coolj\.Rider2017.2\system\resharper-host\local\Transient\ReSharperHost\v10\SolutionCaches\_CSS451_MP5.610877937.00" t="ExcludeRecursive" />
+    <e p="C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Materials" t="Include">
+          <e p="NoCullShader.shader" t="Include" />
+        </e>
+        <e p="Plugins" t="Include">
+          <e p="Editor" t="Include">
+            <e p="JetBrains" t="Include">
+              <e p="Unity3DRider.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="CameraManipulation.cs" t="Include" />
+          <e p="ControlArmScript.cs" t="Include" />
+          <e p="ControlScript.cs" t="Include" />
+          <e p="DirectManipulatorScript.cs" t="Include" />
+          <e p="HelperClass.cs" t="Include" />
+          <e p="Library" t="Include">
+            <e p="Matrix3x3.cs" t="Include" />
+            <e p="Matrix3x3Helpers.cs" t="Include" />
+          </e>
+          <e p="LineSegment.cs" t="Include" />
+          <e p="MainCanvasScript.cs" t="Include" />
+          <e p="MainWorldController.cs" t="Include" />
+          <e p="MeshScripts" t="Include">
+            <e p="BaseMesh.cs" t="Include" />
+            <e p="BaseMeshNormalControls.cs" t="Include" />
+            <e p="ControlNodeScript.cs" t="Include" />
+            <e p="CylinderMeshScript.cs" t="Include" />
+            <e p="SquareMesh.cs" t="Include" />
+            <e p="TriangleNode.cs" t="Include" />
+          </e>
+          <e p="NodePrimitive.cs" t="Include" />
+          <e p="ObjectControlUIScript.cs" t="Include" />
+          <e p="SceneNode.cs" t="Include" />
+        </e>
+      </e>
+      <e p="CSS451_MP5.sln" t="IncludeFlat" />
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+    </e>
   </component>
 </project>

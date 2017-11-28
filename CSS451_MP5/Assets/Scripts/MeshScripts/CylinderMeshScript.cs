@@ -140,7 +140,6 @@ public class CylinderMeshScript : BaseMesh {
             else
             {
                 var column = verticesIndex / M_DesiredVertexCount;
-                var row = verticesIndex % M_DesiredVertexCount;
 
                 if(verticesIndex % M_DesiredVertexCount == 0)
                 {
@@ -167,7 +166,8 @@ public class CylinderMeshScript : BaseMesh {
 
     protected override void UpdateVerticesFromControlPoints()
     {
-        var changeList = Enumerable.Range(0, M_Controllers.Count).Where(index => M_Controllers[index].GetComponent<ControlNodeScripts>().isTransformDirty == true).ToList();
+        var changeList = Enumerable.Range(0, M_Controllers.Count).Where(index => M_Controllers[index].GetComponent<ControlNodeScript>().IsTransformDirty == true).ToList();
+        
         if(changeList.Count > 0)
         {
             foreach(var index in changeList)

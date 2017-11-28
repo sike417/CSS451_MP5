@@ -63,13 +63,11 @@ public partial class BaseMesh : MonoBehaviour
     {
         for (var i = 0; i < M_Vertices.Length; i++)
         {
-            M_Controllers.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
-            M_Controllers[i].AddComponent(typeof(ControlNodeScripts));
-            M_Controllers[i].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            var instance = Instantiate(Resources.Load("Controller", typeof(GameObject))) as GameObject;
+            M_Controllers.Add(instance);
 
             M_Controllers[i].transform.localPosition = M_Vertices[i];
             M_Controllers[i].transform.parent = this.transform;
-            M_Controllers[i].layer = 8;
         }
     }
 

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlNodeScripts : MonoBehaviour {
-
+public class ControlNodeScript : MonoBehaviour
+{
+    private GameObject _manipulator;
+    
     private Vector3 _previousPosition;
-    public bool isTransformDirty
+    public bool IsTransformDirty
     {
         get
         {
@@ -31,4 +33,10 @@ public class ControlNodeScripts : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    private void OnMouseDown()
+    {
+        _manipulator = Instantiate(Resources.Load("DirectManipulator", typeof(GameObject))) as GameObject;
+        _manipulator.transform.localPosition = this.transform.localPosition;
+    }
 }

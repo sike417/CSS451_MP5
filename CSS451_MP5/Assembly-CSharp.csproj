@@ -51,7 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\CameraManipulation.cs" />
+    <Compile Include="Assets\Scripts\ControlArmScript.cs" />
     <Compile Include="Assets\Scripts\ControlScript.cs" />
+    <Compile Include="Assets\Scripts\DirectManipulatorScript.cs" />
     <Compile Include="Assets\Scripts\HelperClass.cs" />
     <Compile Include="Assets\Scripts\Library\Matrix3x3.cs" />
     <Compile Include="Assets\Scripts\Library\Matrix3x3Helpers.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="Assets\Scripts\MainWorldController.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\BaseMesh.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\BaseMeshNormalControls.cs" />
+    <Compile Include="Assets\Scripts\MeshScripts\ControlNodeScript.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\CylinderMeshScript.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\SquareMesh.cs" />
     <Compile Include="Assets\Scripts\MeshScripts\TriangleNode.cs" />
