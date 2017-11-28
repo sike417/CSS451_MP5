@@ -6,6 +6,7 @@ public class SquareMesh : BaseMesh {
 
     const float StartingPoint = -2;
     const float EndingPoint = 2;
+//    Vector2 uv 
 
     protected override void InitializeMesh()
     {
@@ -43,6 +44,11 @@ public class SquareMesh : BaseMesh {
                 M_Vertices[vertexIndex] = new Vector3(xPosition, 0, zPosition);
             }
         }
+    }
+
+    private void CalculateUVLocation()
+    {
+        
     }
 
     protected override void CalculateTriangles()
@@ -163,6 +169,7 @@ public class SquareMesh : BaseMesh {
     {        
         for(var verticeIndex = 0; verticeIndex < M_Controllers.Count; verticeIndex++)
         {
+            M_Vertices[verticeIndex] = M_Controllers[verticeIndex].transform.localPosition;
         }
     }
 }

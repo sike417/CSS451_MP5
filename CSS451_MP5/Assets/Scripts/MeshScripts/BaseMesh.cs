@@ -9,11 +9,26 @@ public partial class BaseMesh : MonoBehaviour
     protected List<GameObject> M_Controllers = new List<GameObject>();
     protected int M_DesiredVertexCount;
 
+    private GameObject m_selectedController;
+
+    public GameObject ObservableController
+    {
+        get { return m_selectedController; }
+        set
+        {
+            if (m_selectedController != null)
+            {
+                m_selectedController.GetComponent<ControlNodeScript>().DestoryManipulator();
+            }
+            m_selectedController = value;
+        }
+    }
+
     protected TriangleCollection M_Triangles = new TriangleCollection();
 
     protected Vector3[] M_Vertices;
     protected Vector3[] M_NormalVectors;
-    protected List<LineSegment> M_Normals = new List<LineSegment>();
+    private List<LineSegment> M_Normals = new List<LineSegment>();
 
     public virtual void UpdateVertexCount(int vertexCount)
     {
@@ -34,6 +49,7 @@ public partial class BaseMesh : MonoBehaviour
             Destroy(currentController);
         }
         M_Controllers.Clear();
+        ObservableController = null;
     }
 
     protected virtual void ClearNormalSegments()
@@ -68,6 +84,7 @@ public partial class BaseMesh : MonoBehaviour
 
             M_Controllers[i].transform.localPosition = M_Vertices[i];
             M_Controllers[i].transform.parent = this.transform;
+            M_Controllers[i].GetComponent<ControlNodeScript>().ParentMesh = this;
         }
     }
 

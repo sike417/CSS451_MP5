@@ -36,10 +36,12 @@ public class MainWorldController : MonoBehaviour {
             case Mode.Mesh:
                 SquareMesh.gameObject.SetActive(true);
                 CylinderMesh.gameObject.SetActive(false);
+                CylinderMesh.ObservableController = null;
                 break;
             case Mode.Cylinder:
                 SquareMesh.gameObject.SetActive(false);
                 CylinderMesh.gameObject.SetActive(true);
+                SquareMesh.ObservableController = null;
                 CylinderMesh.ClearHasChangedFlag();
                 break;
         }
