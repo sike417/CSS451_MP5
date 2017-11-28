@@ -7,6 +7,9 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Materials" t="Include">
+          <e p="exMat" t="Include">
+            <e p="NoCullShader.shader" t="Include" />
+          </e>
           <e p="NoCullShader.shader" t="Include" />
         </e>
         <e p="Plugins" t="Include">
@@ -41,6 +44,7 @@
           <e p="ObjectControlUIScript.cs" t="Include" />
           <e p="SceneNode.cs" t="Include" />
         </e>
+        <e p="TexturePlacement.cs" t="Include" />
       </e>
       <e p="CSS451_MP5.sln" t="IncludeFlat" />
       <e p="Library" t="ExcludeRecursive" />

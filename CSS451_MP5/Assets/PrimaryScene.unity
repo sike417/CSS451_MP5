@@ -722,6 +722,7 @@ GameObject:
   - component: {fileID: 696532019}
   - component: {fileID: 696532018}
   - component: {fileID: 696532017}
+  - component: {fileID: 696532021}
   m_Layer: 0
   m_Name: TexturedSurface
   m_TagString: Untagged
@@ -766,7 +767,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: a152abd8d5291c44f8cad2d5595255f9, type: 2}
+  - {fileID: 2100000, guid: d118c8eb6fe345c438c536b978e8bd29, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -805,6 +806,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 696532015}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &696532021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 696532015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e809853460a9b54298f2699b103021b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Offset: {x: 0, y: 0}
+  Scale: {x: 1, y: 1}
 --- !u!1001 &785989168
 Prefab:
   m_ObjectHideFlags: 0
@@ -950,7 +964,7 @@ Prefab:
     - target: {fileID: 224127657182599590, guid: b1d7043e379d59f46873bfa609f6d64a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -31.120003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224127657182599590, guid: b1d7043e379d59f46873bfa609f6d64a,
         type: 2}
@@ -975,7 +989,7 @@ Prefab:
     - target: {fileID: 224440764589166426, guid: b1d7043e379d59f46873bfa609f6d64a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -31.120003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224440764589166426, guid: b1d7043e379d59f46873bfa609f6d64a,
         type: 2}
@@ -1000,7 +1014,7 @@ Prefab:
     - target: {fileID: 224074746212477926, guid: b1d7043e379d59f46873bfa609f6d64a,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -31.120003
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224074746212477926, guid: b1d7043e379d59f46873bfa609f6d64a,
         type: 2}

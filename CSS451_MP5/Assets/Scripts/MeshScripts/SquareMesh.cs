@@ -6,7 +6,7 @@ public class SquareMesh : BaseMesh {
 
     const float StartingPoint = -2;
     const float EndingPoint = 2;
-//    Vector2 uv 
+    private Vector2[] m_uv; 
 
     protected override void InitializeMesh()
     {
@@ -15,15 +15,21 @@ public class SquareMesh : BaseMesh {
         M_Triangles.Clear();
 
         M_Vertices = new Vector3[(int)Mathf.Pow(M_DesiredVertexCount, 2)];
+        m_uv  = new Vector2[M_Vertices.Length];
         M_NormalVectors = new Vector3[M_Vertices.Length];
 
         CalculateVertices();
+        CalculateUVLocation();
         CalculateTriangles();
         CalculateNormalVectors();
 
         theMesh.vertices = M_Vertices;
         theMesh.triangles = M_Triangles;
         theMesh.normals = M_NormalVectors;
+
+        theMesh.uv = m_uv;
+        
+        GetComponent<TexturePlacement>().SaveInitUV(m_uv);
 
         InitControllers();
         InitNormalSegments();
@@ -48,7 +54,21 @@ public class SquareMesh : BaseMesh {
 
     private void CalculateUVLocation()
     {
-        
+        float startingPoint = 0;
+        float endingPoint = 1;
+        var delta = (Mathf.Abs(startingPoint) + Mathf.Abs(endingPoint)) / (M_DesiredVertexCount - 1);
+        var vertexIndex = 0;
+        for (var zIndex = 0; zIndex < M_DesiredVertexCount; zIndex++)
+        {
+            //calculate z position
+            var zPosition = startingPoint + zIndex * delta;
+            for (var xIndex = 0; xIndex < M_DesiredVertexCount; xIndex++, vertexIndex++)
+            {
+                //calculates x position
+                var xPosition = startingPoint + xIndex * delta;
+                m_uv[vertexIndex] = new Vector2(xPosition, zPosition);
+            }
+        }
     }
 
     protected override void CalculateTriangles()

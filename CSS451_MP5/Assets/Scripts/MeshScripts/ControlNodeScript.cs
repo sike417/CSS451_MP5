@@ -41,9 +41,12 @@ public class ControlNodeScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        _manipulator = Instantiate(Resources.Load("DirectManipulator", typeof(GameObject))) as GameObject;
-        _manipulator.transform.localPosition = this.transform.localPosition;
-        ParentMesh.ObservableController = this.gameObject;
+        if (_manipulator == null)
+        {
+            _manipulator = Instantiate(Resources.Load("DirectManipulator", typeof(GameObject))) as GameObject;
+            _manipulator.transform.localPosition = this.transform.localPosition;
+            ParentMesh.ObservableController = this.gameObject;   
+        }
     }
 
     public void DestoryManipulator()
