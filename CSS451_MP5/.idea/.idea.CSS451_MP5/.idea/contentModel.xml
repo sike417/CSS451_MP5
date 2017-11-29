@@ -43,8 +43,8 @@
           <e p="NodePrimitive.cs" t="Include" />
           <e p="ObjectControlUIScript.cs" t="Include" />
           <e p="SceneNode.cs" t="Include" />
+          <e p="TexturePlacement.cs" t="Include" />
         </e>
-        <e p="TexturePlacement.cs" t="Include" />
       </e>
       <e p="CSS451_MP5.sln" t="IncludeFlat" />
       <e p="Library" t="ExcludeRecursive" />

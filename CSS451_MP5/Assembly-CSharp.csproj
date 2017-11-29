@@ -69,7 +69,7 @@
     <Compile Include="Assets\Scripts\NodePrimitive.cs" />
     <Compile Include="Assets\Scripts\ObjectControlUIScript.cs" />
     <Compile Include="Assets\Scripts\SceneNode.cs" />
-    <Compile Include="Assets\TexturePlacement.cs" />
+    <Compile Include="Assets\Scripts\TexturePlacement.cs" />
     <None Include="Assets\Materials\exMat\NoCullShader.shader" />
     <None Include="Assets\Materials\NoCullShader.shader" />
     <Reference Include="UnityEngine.UI">
