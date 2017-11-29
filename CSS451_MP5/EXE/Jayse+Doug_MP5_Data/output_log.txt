@@ -1,0 +1,26 @@
+Initialize engine version: 5.5.4f1 (8ffd0efd98b1)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) HD Graphics 620 (ID=0x5916)
+    Vendor:   Intel
+    VRAM:     2111 MB
+    Driver:   21.20.16.4550
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.057 seconds
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\coolj\OneDrive\CSS451\Team13_MP5\CSS451_MP5\EXE\Jayse+Doug_MP5_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.

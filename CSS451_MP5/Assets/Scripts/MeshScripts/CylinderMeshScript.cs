@@ -163,17 +163,65 @@ public class CylinderMeshScript : BaseMesh {
         }
         //        M_NormalVectors[verticesIndex] = (triNormalVectors[verticesIndex] + triNormalVectors[verticesIndex + 1]).normalized; 
     }
+    
+    protected override void InitControllers()
+    {
+        for (var i = 0; i < M_Vertices.Length; i++)
+        {
+            var instance = Instantiate(Resources.Load("Controller", typeof(GameObject))) as GameObject;
+            M_Controllers.Add(instance);
+
+            M_Controllers[i].transform.localPosition = M_Vertices[i];
+            if (i >= M_DesiredVertexCount)
+            {
+                M_Controllers[i].gameObject.GetComponent<MeshRenderer>().material.color = Color.black;
+                M_Controllers[i].GetComponent<ControlNodeScript>().IsSelectable = false;
+            }
+            M_Controllers[i].transform.parent = this.transform;
+            M_Controllers[i].GetComponent<ControlNodeScript>().ParentMesh = this;
+        }
+    }
 
     protected override void UpdateVerticesFromControlPoints()
     {
-        var changeList = Enumerable.Range(0, M_Controllers.Count).Where(index => M_Controllers[index].GetComponent<ControlNodeScript>().IsTransformDirty == true).ToList();
-        
-        if(changeList.Count > 0)
+        var manipulationList = Enumerable.Range(0, M_Controllers.Count)
+            .Where(index => M_Controllers[index].GetComponent<ControlNodeScript>().IsSelectable == true).ToList();
+        var rotationPerVertex = m_cylinderRotation / (M_DesiredVertexCount - 1);
+
+        for (var index = 0; index < manipulationList.Count; index++)
         {
-            foreach(var index in changeList)
+            var offset = M_Controllers[index].transform.position -
+                         M_Controllers[index].GetComponent<ControlNodeScript>()._previousPosition;
+            var offsetX = Vector3.Project(offset, Vector3.right).magnitude;
+            var offsetXAxis = Vector3.Project(offset, Vector3.right).normalized;
+            var offsetY = Vector3.Project(offset, Vector3.up).magnitude;
+            var offsetYAxis = Vector3.Project(offset, Vector3.up).normalized;
+            var offsetZ = Vector3.Project(offset, Vector3.forward).magnitude;
+            var offsetZAxis = Vector3.Project(offset, Vector3.forward).normalized;
+            M_Controllers[index].GetComponent<ControlNodeScript>().SetPreviousPosition();
+
+            for (var i = 0; i < M_DesiredVertexCount; i++)
             {
-                M_Controllers[index].transform.hasChanged = false;
+                var currentController = M_Controllers[index + M_DesiredVertexCount * i];
+                var rotationAxis = Quaternion.AngleAxis(rotationPerVertex * i, Vector3.up);
+                currentController.transform.localPosition += rotationAxis * offsetXAxis * offsetX;
+                currentController.transform.localPosition += offsetYAxis * offsetY;
+                currentController.transform.localPosition += offsetZAxis * offsetZ;
             }
         }
+
+        for(var verticeIndex = 0; verticeIndex < M_Controllers.Count; verticeIndex++)
+        {
+            M_Vertices[verticeIndex] = M_Controllers[verticeIndex].transform.localPosition;
+        }
+//        var changeList = Enumerable.Range(0, M_Controllers.Count).Where(index => M_Controllers[index].GetComponent<ControlNodeScript>().IsTransformDirty == true).ToList();
+//        
+//        if(changeList.Count > 0)
+//        {
+//            foreach(var index in changeList)
+//            {
+//                M_Controllers[index].transform.hasChanged = false;
+//            }
+//        }
     }
 }

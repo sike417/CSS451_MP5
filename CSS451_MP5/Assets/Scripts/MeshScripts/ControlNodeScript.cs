@@ -6,7 +6,8 @@ public class ControlNodeScript : MonoBehaviour
 {
     private GameObject _manipulator;
     
-    private Vector3 _previousPosition;
+    public Vector3 _previousPosition;
+    
     public bool IsTransformDirty
     {
         get
@@ -24,6 +25,8 @@ public class ControlNodeScript : MonoBehaviour
         }
     }
 
+    public bool IsSelectable = true;
+
     public BaseMesh ParentMesh;
 
 	// Use this for initialization
@@ -39,13 +42,19 @@ public class ControlNodeScript : MonoBehaviour
 	    }
 	}
 
+    public void SetPreviousPosition()
+    {
+        _previousPosition = this.transform.localPosition;
+    }
+
     private void OnMouseDown()
     {
-        if (_manipulator == null)
+        if (_manipulator == null && IsSelectable)
         {
             _manipulator = Instantiate(Resources.Load("DirectManipulator", typeof(GameObject))) as GameObject;
             _manipulator.transform.localPosition = this.transform.localPosition;
-            ParentMesh.ObservableController = this.gameObject;   
+            ParentMesh.ObservableController = this.gameObject;
+            this.gameObject.GetComponent<MeshRenderer>().material.color = Color.cyan;
         }
     }
 
@@ -54,6 +63,7 @@ public class ControlNodeScript : MonoBehaviour
         if (_manipulator == null) return;
         Destroy(_manipulator);
         _manipulator = null;
+        this.gameObject.GetComponent<MeshRenderer>().material.color = Color.white;
     }
 
     public bool HasManipulator()

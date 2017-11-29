@@ -29,9 +29,9 @@ public class MainCanvasScript : MonoBehaviour
         meshControl.AddValueChanged(M_MainWorld.UpdateMeshVertices);
         cylinderResolutionControl.AddValueChanged(M_MainWorld.UpdateCylinderResolution);
 		cylinderRotationControl.AddValueChanged(M_MainWorld.UpdateCylinderRotation);
-        meshControl.InitSliderControl(2, 20, 3);
-        cylinderResolutionControl.InitSliderControl(4, 20, 4);
-        cylinderRotationControl.InitSliderControl(10, 360, 310);
+        meshControl.InitSliderControl(2, 20, 5);
+        cylinderResolutionControl.InitSliderControl(4, 20, 10);
+        cylinderRotationControl.InitSliderControl(10, 360, 275);
 
 
         m_dropdownOptionList = Enum.GetNames(typeof(Mode)).ToList();
